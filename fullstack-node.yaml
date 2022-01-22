@@ -1,0 +1,40 @@
+Description: Node.js server
+
+Resources:
+  NodeServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.nano
+      ImageId: ami-08e4e35cccc6189f4
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+        - !Ref HTTPSecurityGroup
+      KeyName: NodeServerKey
+
+  NodeEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref NodeServer
+
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: SSHGroup
+      GroupDescription: Enable SSH access to instances via port 22
+      SecurityGroupIngress:
+      - CidrIp: 192.222.245.48/32
+        FromPort: 22
+        ToPort: 22
+        IpProtocol: tcp
+
+  HTTPSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2HTTPGroup
+      GroupDescription: Enable HTTP traffic to instances via port 80
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 80
+        ToPort: 80
+        IpProtocol: tcp
+

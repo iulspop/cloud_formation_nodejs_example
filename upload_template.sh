@@ -1,0 +1,1 @@
+aws cloudformation create-stack --stack-name fullstack-node --template-body file://fullstack-node.yaml
