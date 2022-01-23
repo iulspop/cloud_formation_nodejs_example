@@ -15,6 +15,7 @@ Resources:
       SecurityGroups:
         - !Ref SSHSecurityGroup
         - !Ref HTTPSecurityGroup
+        - !Ref HTTPSSecurityGroup
       KeyName: NodeServerKey
       UserData: !Ref UserDataFile
 
@@ -43,4 +44,15 @@ Resources:
         - CidrIp: 0.0.0.0/0
           FromPort: 80
           ToPort: 80
+          IpProtocol: tcp
+
+  HTTPSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2HTTPSGroup
+      GroupDescription: Enable HTTPS traffic to instances via port 443
+      SecurityGroupIngress:
+        - CidrIp: 0.0.0.0/0
+          FromPort: 443
+          ToPort: 443
           IpProtocol: tcp
