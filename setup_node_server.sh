@@ -1,33 +1,39 @@
 #!/bin/bash
 
-echo "#### Switch from root to ec2-user ####"
-su - ec2-user
-cd ~
-echo "Should logged into ec2-user:"
-whoami
+cat << EOF > setup_node_server.sh
+  $HOME = /home/ec2-user
+  $PATH = /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 
-echo "#### Update packages ####"
-sudo yum update -y
+  echo "Should logged into ec2-user:"
+  whoami
+  cd ~
+  pwd
 
-echo "#### Install NVM ####"
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-. ~/.nvm/nvm.sh
-nvm -v
+  echo "#### Update packages ####"
+  sudo yum update -y
 
-echo "#### Install Node ####"
-nvm install node
-node -e "console.log('Running Node.js ' + process.version)"
+  echo "#### Install NVM ####"
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+  . ~/.nvm/nvm.sh
+  nvm -v
 
-echo "#### Install Git ####"
-sudo yum install git -y
+  echo "#### Install Node ####"
+  nvm install node
+  node -e "console.log('Running Node.js ' + process.version)"
 
-echo "#### Set Node permission to listen on Port 80 ####"
-sudo setcap cap_net_bind_service=+ep /home/ec2-user/.nvm/versions/node/v17.4.0/bin/node
+  echo "#### Install Git ####"
+  sudo yum install git -y
 
-echo "#### Clone & Install App ####"
-git clone https://github.com/iulspop/checkin-app-api.git
-cd checkin-app-api/
-npm install
+  echo "#### Give Node permission to listen on Port 80 ####"
+  sudo setcap cap_net_bind_service=+ep /home/ec2-user/.nvm/versions/node/v17.4.0/bin/node
 
-echo "#### Start App ####"
-node index.js
+  echo "#### Clone & Install App ####"
+  git clone https://github.com/iulspop/checkin-app-api.git
+  cd checkin-app-api/
+  npm install
+
+  echo "#### Start App ####"
+  node index.js &
+EOF
+
+sudo -u ec2-user bash setup_node_server.sh
