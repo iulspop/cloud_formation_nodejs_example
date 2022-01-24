@@ -4,7 +4,7 @@ cat << EOF > setup_node_server.sh
   $HOME = /home/ec2-user
   $PATH = /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 
-  echo "Should logged into ec2-user:"
+  echo "#### Should be logged into ec2-user ####"
   whoami
   cd ~
   pwd
