@@ -30,7 +30,7 @@ Resources:
       GroupName: SSHGroup
       GroupDescription: Enable SSH access to instances via port 22
       SecurityGroupIngress:
-        - CidrIp: 192.222.245.48/32
+        - CidrIp: 0.0.0.0/0
           FromPort: 22
           ToPort: 22
           IpProtocol: tcp
