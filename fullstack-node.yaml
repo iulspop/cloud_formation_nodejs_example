@@ -56,3 +56,8 @@ Resources:
           FromPort: 443
           ToPort: 443
           IpProtocol: tcp
+
+Outputs:
+  InstanceIPAddress:
+    Description: Public IP address of EC2 instance
+    Value: !Ref NodeEIP
