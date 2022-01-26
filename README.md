@@ -1,6 +1,6 @@
 # Node.js Server Deploy and Configuration with AWS CloudFormation
 
-This repo contains a CloudFormation template and scripts for automatically provisonning an EC2 instance and configuring it to run a Node.js server.
+This repo contains a CloudFormation template and scripts for automatically provisonning an EC2 instance and configuring it to run an Nginx web server and a Node.js application server. The Node app process is managed with PM2.
 
 ## What is CloudFormation?
 
