@@ -24,16 +24,24 @@ cat << EOF > setup_node_server.sh
   echo "#### Install Git ####"
   sudo yum install git -y
 
-  echo "#### Give Node permission to listen on Port 80 ####"
-  sudo setcap cap_net_bind_service=+ep /home/ec2-user/.nvm/versions/node/v17.4.0/bin/node
-
   echo "#### Clone & Install App ####"
   git clone https://github.com/iulspop/checkin-app-api.git
   cd checkin-app-api/
   npm install
 
+  echo "### Install PM2 ####"
+  npm install pm2@latest -g
+
+  echo "#### Install & Configure & Start Nginx ####"
+  sudo amazon-linux-extras install -y nginx1
+  cd /etc/nginx
+  sudo touch default.d/default.conf
+  sudo su -c 'echo "location / { proxy_pass http://localhost:3000; }" > default.d/default.conf'
+  sudo systemctl start nginx
+
   echo "#### Start App ####"
-  node index.js &
+  cd ~/checkin-app-api
+  PORT=3000 NODE_ENV=production pm2 start index.js --name checkin_app --update-env
 EOF
 
 sudo -u ec2-user bash setup_node_server.sh
