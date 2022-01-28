@@ -13,8 +13,8 @@ CloudFormation is a tool for defining infrastructure as code. You create a templ
 - Create an [EC2 key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) and store the private key where you can access it from the terminal. Make sure `KeyName` property value under the EC2 ressource in the `fullstack-node.yaml` is the name of the EC2 key pair you created.
 - Under "#### Clone & Install App ####" in the `setup_node_server.sh` file, you can change the GitHub repository to launch another Node.js server project. If it is a private repository, you must configure credentials on the EC2 instance.
 
-### Start The Stack
-Run `bash start_stack.sh` to start the stack. You can see in the AWS CloudFormation console that the stack is initialized and that CloudFormation starts provisioning ressources.
+### Create The Stack
+Run `bash create_stack.sh` to start the stack. You can see in the AWS CloudFormation console that the stack is initialized and that CloudFormation starts provisioning ressources.
 
 ### Connect to EC2 Instance
 After the EC2 instance has started and received an EIP (Elastic IP Address), you can connect to it via SSH by running `bash connect_ssh.sh $EC2_PUBLIC_IP`. You can find the instance's public IP in the EC2 console.
@@ -26,7 +26,7 @@ Run `bash delete_stack.sh` to delete the stack. CloudFormation will delete the s
 
 `fullstack-node.yaml` is the CloudFormation template. It defines the ressources the CloudFormation stack will provision. To understand the template anatomy, refer to [this documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-anatomy.html).
 
-`start_stack.sh` send the template to CloudFormation and starts the stack. It also encodes the `setup_node_server.sh` script in Base64 and assigns the encoded string to `UserDataFile` parameter. User-data is the script run by cloud-init when the EC2 instance starts. By assigning the value to the parameter in this way, we can keep the script in a separate file instead of embedding it in the template. To learn more about UserData, refer to [this documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html).
+`create_stack.sh` send the template to CloudFormation and starts the stack. It also encodes the `setup_node_server.sh` script in Base64 and assigns the encoded string to `UserDataFile` parameter. User-data is the script run by cloud-init when the EC2 instance starts. By assigning the value to the parameter in this way, we can keep the script in a separate file instead of embedding it in the template. To learn more about UserData, refer to [this documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html).
 
 `setup_node_server` is user-data script run by cloud init when the EC2 instances starts. It configures the EC2 instance to run an Express server. You may notice most of the script is saved to a file using `cat << EOF > setup_node_server.sh`, then the file is run as the ec2-user: `sudo -u ec2-user bash setup_node_server.sh`. User-data scripts run as the root user and you cannot change users using `su`. However, some installs and critically the Node server you want to run in user-space without root credientials. By saving the commands to a file and running the file as ec2-user, we can work around the restriction to just the root user. Since we create a second bash process running as a child of the parent bash process where we're logged in as root, the `$PATH` and `$HOME` environment variables of the root user envirnment are preserved and must be replaced manually.
 
