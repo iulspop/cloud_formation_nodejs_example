@@ -1,5 +1,28 @@
 #!/bin/bash
 
+echo "#### Update packages ####"
+yum update -y
+
+echo "#### Install & Configure PostgreSQL ####"
+amazon-linux-extras enable postgresql13
+yum clean metadata
+yum install -y postgresql postgresql-server postgresql-libs
+postgresql-setup --initdb
+systemctl start postgresql.service
+systemctl enable postgresql.service
+su postgres -c "createuser --createdb ec2-user"
+
+echo "#### Install & Configure & Start Nginx ####"
+amazon-linux-extras install -y nginx1
+cd /etc/nginx
+touch default.d/default.conf
+echo "location / { proxy_pass http://localhost:3000; }" > default.d/default.conf
+systemctl start nginx
+systemctl enable nginx
+
+echo "#### Install Git ####"
+yum install git -y
+
 cat << EOF > setup_node_server.sh
   $HOME = /home/ec2-user
   $PATH = /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
@@ -8,9 +31,6 @@ cat << EOF > setup_node_server.sh
   whoami
   cd ~
   pwd
-
-  echo "#### Update packages ####"
-  sudo yum update -y
 
   echo "#### Install NVM ####"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -21,29 +41,9 @@ cat << EOF > setup_node_server.sh
   nvm install node
   node -e "console.log('Running Node.js ' + process.version)"
 
-  echo "#### Install Git ####"
-  sudo yum install git -y
-
-  echo "#### Install & Configure PostgreSQL ####"
-  sudo amazon-linux-extras enable postgresql13
-  sudo yum clean metadata
-  sudo yum install -y postgresql postgresql-server postgresql-libs
-  sudo postgresql-setup --initdb
-  sudo systemctl start postgresql.service
-  sudo systemctl enable postgresql.service
-  sudo su postgres -c "createuser --createdb ec2-user"
-
-  echo "#### Install & Configure & Start Nginx ####"
-  sudo amazon-linux-extras install -y nginx1
-  cd /etc/nginx
-  sudo touch default.d/default.conf
-  sudo su -c 'echo "location / { proxy_pass http://localhost:3000; }" > default.d/default.conf'
-  sudo systemctl start nginx
-  sudo systemctl enable nginx
-
   echo "#### Clone & Install App ####"
-  cd ~
   git clone https://github.com/iulspop/checkin-app-api.git
+  cd checkin-app-api/
   npm install
 
   echo "### Install PM2 ####"
