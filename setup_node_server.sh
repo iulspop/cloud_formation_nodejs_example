@@ -24,12 +24,22 @@ cat << EOF > setup_node_server.sh
   echo "#### Install Git ####"
   sudo yum install git -y
 
+  echo "#### Install & Configure PostgreSQL ####"
+  sudo amazon-linux-extras enable postgresql13
+  sudo yum clean metadata
+  sudo yum install -y postgresql postgresql-server postgresql-libs
+  sudo postgresql-setup --initdb
+  sudo systemctl start postgresql.service
+  sudo systemctl enable postgresql.service
+  sudo su postgres -c "createuser --createdb ec2-user"
+
   echo "#### Install & Configure & Start Nginx ####"
   sudo amazon-linux-extras install -y nginx1
   cd /etc/nginx
   sudo touch default.d/default.conf
   sudo su -c 'echo "location / { proxy_pass http://localhost:3000; }" > default.d/default.conf'
   sudo systemctl start nginx
+  sudo systemctl enable nginx
 
   echo "#### Clone & Install App ####"
   cd ~
