@@ -24,14 +24,6 @@ cat << EOF > setup_node_server.sh
   echo "#### Install Git ####"
   sudo yum install git -y
 
-  echo "#### Clone & Install App ####"
-  git clone https://github.com/iulspop/checkin-app-api.git
-  cd checkin-app-api/
-  npm install
-
-  echo "### Install PM2 ####"
-  npm install pm2@latest -g
-
   echo "#### Install & Configure & Start Nginx ####"
   sudo amazon-linux-extras install -y nginx1
   cd /etc/nginx
@@ -39,8 +31,15 @@ cat << EOF > setup_node_server.sh
   sudo su -c 'echo "location / { proxy_pass http://localhost:3000; }" > default.d/default.conf'
   sudo systemctl start nginx
 
+  echo "#### Clone & Install App ####"
+  cd ~
+  git clone https://github.com/iulspop/checkin-app-api.git
+  npm install
+
+  echo "### Install PM2 ####"
+  npm install pm2@latest -g
+
   echo "#### Start App ####"
-  cd ~/checkin-app-api
   PORT=3000 NODE_ENV=production pm2 start index.js --name checkin_app --update-env
 EOF
 
