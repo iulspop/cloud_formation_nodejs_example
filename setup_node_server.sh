@@ -12,6 +12,19 @@ systemctl start postgresql.service
 systemctl enable postgresql.service
 su postgres -c "createuser --createdb ec2-user"
 
+echo "#### Install & Start MongoDB ####"
+cat << EOF > /etc/yum.repos.d/mongodb-org-5.0.repo
+[mongodb-org-5.0]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/amazon/2/mongodb-org/5.0/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-5.0.asc
+EOF
+yum install -y mongodb-org
+systemctl start mongod
+systemctl enable mongod
+
 echo "#### Install & Configure & Start Nginx ####"
 amazon-linux-extras install -y nginx1
 cd /etc/nginx
