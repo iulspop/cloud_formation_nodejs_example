@@ -10,7 +10,7 @@ CloudFormation is a tool for defining infrastructure as code. You create a templ
 
 ### Prerequisites
 - [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and configure it with your account credentials.
-- Create an [EC2 key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) and store the private in `~/.ssh` with appropriate permissions. You can run the `init_key_pair.sh` helper script once to create the desired key pair. Make sure `KeyName` property value under the EC2 ressource in the `fullstack-node.yaml` is the name of the EC2 key pair you created.
+- Create an [EC2 key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html) and store the private key in `~/.ssh` with appropriate permissions. You can run the `init_key_pair.sh` helper script once to create the desired key pair. Make sure `KeyName` property value under the EC2 ressource in the `fullstack-node.yaml` is the name of the EC2 key pair you created.
 - Under "#### Clone & Install App ####" in the `setup_node_server.sh` file, you can change the GitHub repository to launch another Node.js server project. If it is a private repository, you must configure credentials on the EC2 instance.
 
 ### Create The Stack
