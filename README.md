@@ -4,7 +4,7 @@ This repo contains a CloudFormation template and scripts for automatically provi
 
 ## What is CloudFormation?
 
-CloudFormation is a tool for defining infrastructure as code. You create a template in a YAML or JSON file, then you can upload that template to CloudFormation and it will produce a stack based on the ressources and configuration defined in the template. Refer to the [CloudFormation documentation](https://docs.aws.amazon.com/cloudformation/?id=docs_gateway) to learn more.
+CloudFormation is a tool for defining infrastructure as code. You create a template in a YAML or JSON file, then you can upload that template to CloudFormation and it will produce a stack based on the resources and configuration defined in the template. Refer to the [CloudFormation documentation](https://docs.aws.amazon.com/cloudformation/?id=docs_gateway) to learn more.
 
 ## How to Get Started?
 
