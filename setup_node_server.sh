@@ -37,8 +37,8 @@ echo "#### Install Git ####"
 yum install git -y
 
 cat << EOF > setup_node_server.sh
-  $HOME = /home/ec2-user
-  $PATH = /usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
+  $HOME=/home/ec2-user
+  $PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin
 
   echo "#### Should be logged into ec2-user ####"
   whoami
@@ -52,6 +52,7 @@ cat << EOF > setup_node_server.sh
 
   echo "#### Install Node ####"
   nvm install node
+  nvm use node
   node -e "console.log('Running Node.js ' + process.version)"
 
   echo "#### Clone & Install App ####"
