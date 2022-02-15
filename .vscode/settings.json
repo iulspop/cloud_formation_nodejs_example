@@ -1,5 +1,7 @@
 {
   "yaml.schemas": {
-    "https://raw.githubusercontent.com/awslabs/goformation/v5.2.11/schema/cloudformation.schema.json": "file:///home/joy/uber_dev/learning_projects/vps_practice/fullstack-node.yaml"
+    "https://raw.githubusercontent.com/awslabs/goformation/v5.2.11/schema/cloudformation.schema.json": [
+      "file:///home/joy/uber_dev/learning_projects/cloud_formation_nodejs_example/fullstack-node.yaml"
+    ]
   }
 }
