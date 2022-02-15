@@ -12,6 +12,7 @@ Resources:
     Properties:
       InstanceType: t2.nano
       ImageId: ami-08e4e35cccc6189f4
+      IamInstanceProfile: !Ref SSMCoreInstanceProfile
       SecurityGroups:
         - !Ref SSHSecurityGroup
         - !Ref HTTPSecurityGroup
@@ -56,6 +57,30 @@ Resources:
           FromPort: 443
           ToPort: 443
           IpProtocol: tcp
+
+  SSMCoreInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: SSMCoreProfile
+      Roles:
+        - !Ref SSMCoreIAMRole
+
+  SSMCoreIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: SSMCore
+      Description: Allow EC2 instance to access SSM
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
 
 Outputs:
   InstanceIPAddress:
