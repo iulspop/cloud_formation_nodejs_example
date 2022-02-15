@@ -45,6 +45,10 @@ cat << EOF > setup_node_server.sh
   cd ~
   pwd
 
+  echo "#### Configure AWS CLI Region ####"
+  mkdir .aws
+  echo -e "[default]\nregion=us-east-1" > .aws/config
+
   echo "#### Install NVM ####"
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
   . ~/.nvm/nvm.sh
