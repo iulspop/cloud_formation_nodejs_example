@@ -1,0 +1,2 @@
+ aws ssm describe-parameters
+ 
