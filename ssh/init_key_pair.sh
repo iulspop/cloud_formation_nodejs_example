@@ -1,4 +1,4 @@
-key_name=EC2NodeServerKey
+key_name=EC2ServerKey
 
 # Create .ssh directory if it doesn't exist
 if [ ! -d ~/.ssh ]; then
